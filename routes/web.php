@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SupplierController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,13 +16,23 @@ use App\Http\Controllers\ProductController;
 |
 */
 
-Route::get('/product', [ProductController::class, 'index']);
-Route::get('/product/create', [ProductController::class, 'create'])->name("product-create");
-Route::post('/product', [ProductController::class, 'store'])->name("product-store");
-Route::get('/product/{id}', [ProductController::class, 'show']);
-Route::get('/product/{id}/edit', [ProductController::class, 'edit']);
-Route::put('/product/{id}', [ProductController::class, 'update']);
-Route::delete('/product/{id}', [ProductController::class, 'destroy']);
+// SUPPLIER ROUTES
+Route::middleware(['auth', 'RoleCheck:admin'])->group(function () {
+    Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier.index');
+    Route::get('/supplier/create', [SupplierController::class, 'create'])->name("supplier-create");
+    Route::post('/supplier', [SupplierController::class, 'store'])->name("supplier-store");
+});
+
+// PRODUCTS ROUTES
+Route::middleware(['auth', 'RoleCheck:admin'])->group(function () {
+    Route::get('/product', [ProductController::class, 'index']);
+    Route::get('/product/create', [ProductController::class, 'create'])->name("product-create");
+    Route::post('/product', [ProductController::class, 'store'])->name("product-store");
+    Route::get('/product/{id}', [ProductController::class, 'show']);
+    Route::get('/product/{id}/edit', [ProductController::class, 'edit']);
+    Route::put('/product/{id}', [ProductController::class, 'update']);
+    Route::delete('/product/{id}', [ProductController::class, 'destroy']);
+});
 
 
 Route::get('/', function () {

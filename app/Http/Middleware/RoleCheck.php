@@ -9,11 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class RoleCheck
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
     public function handle(Request $request, Closure $next,...$roles): Response
     {
         foreach ($roles as $role) {
@@ -21,5 +16,7 @@ class RoleCheck
                 return $next($request);
             }
         }
+        // Tambahkan ini
+        return redirect('/')->with('error', 'Unauthorized access');
     }
 }
