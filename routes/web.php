@@ -31,7 +31,8 @@ Route::middleware(['auth', 'RoleCheck:admin'])->group(function () {
     Route::get('/product/{id}', [ProductController::class, 'show']);
     Route::get('/product/{id}/edit', [ProductController::class, 'edit'])->name("product-edit");
     Route::put('/product/{id}', [ProductController::class, 'update'])->name("product-update");
-    Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name("product-deleted");
+    Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name(",product-deleted,");
+    Route::get('/product/{id}', [ProductController::class, 'show'])->name("product-detail");
 });
 
 
@@ -48,6 +49,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/product/export/excel', [ProductController::class,'exportExcel'])->name('product-export-excel');
 
 Route::get('/route_cont/{id}', [ProductController::class,'index']);
 require __DIR__.'/auth.php';

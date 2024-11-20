@@ -2,19 +2,41 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ProductsExport;
 use App\Models\product;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = Product::all();
-        return view("master-data.product-master.index-product",compact('data'));
+        // Membuat query builder baru untuk model Product
+        $query = Product::query();
+
+
+        // Cek apakah ada parameter 'search' di request
+        if ($request->has('search') && $request->search != '') {
+
+
+            // Melakukan pencarian berdasarkan nama produk atau informasi
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('product_name', 'like', '%' . $search . '%');
+            });
+        }
+
+
+        // Jika tidak ada parameter ‘search’, langsung ambil produk dengan paginasi
+        $products = $query->paginate(2);
+
+
+      return view("master-data.product-master.index-product", compact('products'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -48,7 +70,8 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+        return view("master-data.product-master.detail-product", compact('product'));
     }
 
     /**
@@ -99,4 +122,8 @@ class ProductController extends Controller
         }
         return redirect()->route('product')->with('error','Product tidak ditemukan.');
     }
+    public function exportExcel (){
+        return Excel::download(new ProductsExport,'product.xlsx');
+    }
 }
+
