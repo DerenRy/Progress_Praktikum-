@@ -20,7 +20,19 @@
                                 <label for="product_name" class="block text-sm font-medium text-gray-700">Product Name</label>
                                 <input type="text" id="product_name" name="product_name" class="block w-full p-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
                             </div>
-               
+
+                            <div class="form-group">
+                                <label for="supplier" class="block text-sm font-medium text-gray-700">Supplier</label>
+                                <select id="supplier" name="supplier_id" class="block w-full p-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>
+                                    <option value="" disabled selected>Select a supplier</option>
+                                    @foreach ($suppliers as $supplier)
+                                        <option value="{{$supplier->id}}"> {{ $supplier->supplier_name }}</option>
+                                    
+                                    @endforeach
+                                    
+                                </select>
+                            </div>
+
                             <div class="form-group">
                                 <label for="unit" class="block text-sm font-medium text-gray-700">Unit</label>
                                 <select id="unit" name="unit" class="block w-full p-2 mt-1 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" required>

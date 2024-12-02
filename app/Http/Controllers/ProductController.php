@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\ProductsExport;
 use App\Models\product;
+use App\Models\supplier;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -14,15 +15,9 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        // Membuat query builder baru untuk model Product
-        $query = Product::query();
+        $query = Product::with('supplier');
 
-
-        // Cek apakah ada parameter 'search' di request
         if ($request->has('search') && $request->search != '') {
-
-
-            // Melakukan pencarian berdasarkan nama produk atau informasi
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('product_name', 'like', '%' . $search . '%');
@@ -43,7 +38,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view("master-data.product-master.create-product");
+        $suppliers = supplier::all();
+        return view("master-data.product-master.create-product",compact('suppliers')) ;
     }
 
     /**
@@ -58,6 +54,7 @@ class ProductController extends Controller
             'information'=>'nullable|string',
             'qty'=>'required|integer',
             'producer'=>'required|string|max:255',
+            'supplier_id'=> 'required|exists:suppliers,id',
         ]);
 
         product::create($validasi_data);
@@ -71,7 +68,8 @@ class ProductController extends Controller
     public function show(string $id)
     {
         $product = Product::findOrFail($id);
-        return view("master-data.product-master.detail-product", compact('product'));
+        $suppliers = supplier::all();
+        return view("master-data.product-master.detail-product", compact('supplier'));
     }
 
     /**
@@ -79,8 +77,11 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        $product = Product::findOrFail($id);
-        return view('master-data.product-master.edit-product',compact('product'));
+    $suppliers = Supplier::all(); 
+    $product = Product::findOrFail($id); 
+
+    // Kirimkan $suppliers dan $product ke view
+    return view('master-data.product-master.edit-product', compact('product', 'suppliers'));
     }
 
     /**

@@ -16,5 +16,10 @@ class product extends Model
         'information',
         'qty',
         'producer',
+        'supplier_id'
     ];
+
+    public function supplier(){
+        return $this->belongsTo(supplier::class);
+    }
 }

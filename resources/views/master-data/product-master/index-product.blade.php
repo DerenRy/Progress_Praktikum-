@@ -35,7 +35,9 @@
             <th class="px-4 py-2 text-left text-gray-600 border border-gray-200">information</th>
             <th class="px-4 py-2 text-left text-gray-600 border border-gray-200">qty</th>
             <th class="px-4 py-2 text-left text-gray-600 border border-gray-200">producer</th>
+            <th class="px-4 py-2 text-left text-gray-600 border border-gray-200">Supplier Name</th>
             <th class="px-4 py-2 text-left text-gray-600 border border-gray-200">Aksi</th>
+
           </tr>
 
         </thead>
@@ -49,12 +51,12 @@
                   {{$product->product_name}}
                 </a>
               </td>
-              <td class="px-4 py-2 border border-gray-200">{{ $product->product_name }}</td>
               <td class="px-4 py-2 border border-gray-200">{{ $product->unit }}</td>
               <td class="px-4 py-2 border border-gray-200">{{ $product->type }}</td>
               <td class="px-4 py-2 border border-gray-200">{{ $product->information }}</td>
               <td class="px-4 py-2 border border-gray-200">{{ $product->qty }}</td>
               <td class="px-4 py-2 border border-gray-200">{{ $product->producer }}</td>
+              <td class="px-4 py-2 border border-gray-200">{{ $product->supplier->supplier_name ?? 'No supplier' }}</td>
               <td class="px-4 py-2 border border-gray-200">
                 <a href="{{ route('product-edit', $product->id) }}" class="px-2 text-blue-600 hover:text-blue-800">Edit</a>
                 <button class="px-2 text-red-600 hover:text-red-800" onclick="confirmDelete('{{ route(',product-deleted,', $product->id) }}')">Hapus</button>
